@@ -65,8 +65,16 @@ body {
 .pokemon .info .name {
 	margin: 1.6rem 0 0.8rem;
 	letter-spacing: 1px;
+	text-transform: capitalize;
 }
 
 .pokemon .info .type {
 	font-size: 1.2rem;
+}
+
+.pokemon .type span {
+	padding: 0.2rem 0.4rem;
+	/* background-color: aqua; */
+	margin: 0 0.4rem;
+	border-radius: 8px;
 }
