@@ -1,4 +1,5 @@
 const pokedex = document.querySelector('.pokedex-container');
+const startingOptionEl = document.querySelector('.filter');
 const COUNT_1_GEN = 151;
 const colors = {
 	grass: '#cdeac0',
@@ -19,6 +20,16 @@ const colors = {
 	ghost: '#b9b5ff',
 	dragon: '#9ba9ff',
 };
+
+for (const color in colors) {
+	const option = document.createElement('button');
+	option.classList.add('btn');
+	option.classList.add('btn-fetch');
+	option.innerText = color;
+	option.style.backgroundColor = colors[color];
+
+	startingOptionEl.append(option);
+}
 
 async function fetchPokemons() {
 	for (let i = 1; i <= COUNT_1_GEN; i++) {
@@ -72,4 +83,4 @@ function createPokemonCard(pokemon) {
 	pokedex.append(cardEl);
 }
 
-fetchPokemons();
+// fetchPokemons();

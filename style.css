@@ -20,6 +20,31 @@ body {
 	justify-content: center;
 }
 
+.filter {
+	max-width: 80rem;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	text-align: center;
+	justify-content: center;
+}
+
+.btn-fetch {
+	border: 0;
+	padding: 0.8rem 1.6rem;
+	margin: 1rem;
+	border-radius: 8rem;
+	font-family: inherit;
+	font-weight: 600;
+	cursor: pointer;
+	min-width: 10rem;
+}
+
+.btn-fetch--all {
+	background-color: rgb(53, 52, 52);
+	color: #fff;
+}
+
 .pokedex-container {
 	display: flex;
 	flex-wrap: wrap;
