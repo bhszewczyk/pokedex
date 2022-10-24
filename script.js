@@ -1,5 +1,6 @@
 const pokedex = document.querySelector('.pokedex-container');
 const startingOptionEl = document.querySelector('.filter');
+const btn1gen = document.querySelector('.btn-fetch--1-gen');
 const COUNT_1_GEN = 151;
 const colors = {
 	grass: '#cdeac0',
@@ -21,6 +22,8 @@ const colors = {
 	dragon: '#9ba9ff',
 };
 
+btn1gen.addEventListener('click', fetch1stGen);
+
 for (const color in colors) {
 	const option = document.createElement('button');
 	option.classList.add('btn');
@@ -28,10 +31,33 @@ for (const color in colors) {
 	option.innerText = color;
 	option.style.backgroundColor = colors[color];
 
+	option.addEventListener('click', filterPokemon);
+
 	startingOptionEl.append(option);
 }
 
-async function fetchPokemons() {
+function resetPokedex() {
+	pokedex.innerHTML = '';
+}
+
+async function filterPokemon(e) {
+	resetPokedex();
+	const type = e.target.innerText;
+
+	const results = await fetch(`https://pokeapi.co/api/v2/type/${type}`);
+	const data = await results.json();
+
+	const pokemonOfType = data.pokemon;
+
+	for (let i = 0; i <= pokemonOfType.length; i++) {
+		const pokemonName = pokemonOfType[i].pokemon.name;
+
+		await getPokemon(pokemonName);
+	}
+}
+
+async function fetch1stGen() {
+	resetPokedex();
 	for (let i = 1; i <= COUNT_1_GEN; i++) {
 		await getPokemon(i);
 	}
