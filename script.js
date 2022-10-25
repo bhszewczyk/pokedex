@@ -22,7 +22,7 @@ const colors = {
 	dragon: '#9ba9ff',
 };
 
-btn1gen.addEventListener('click', fetch1stGen);
+btn1gen.addEventListener('click', showAll1stGen);
 
 for (const color in colors) {
 	const option = document.createElement('button');
@@ -34,26 +34,6 @@ for (const color in colors) {
 	option.addEventListener('click', filterPokemon);
 
 	startingOptionEl.append(option);
-}
-
-function resetPokedex() {
-	pokedex.innerHTML = '';
-}
-
-async function filterPokemon(e) {
-	resetPokedex();
-	const type = e.target.innerText;
-
-	const results = await fetch(`https://pokeapi.co/api/v2/type/${type}`);
-	const data = await results.json();
-
-	const pokemonOfType = data.pokemon;
-
-	for (let i = 0; i <= pokemonOfType.length; i++) {
-		const pokemonName = pokemonOfType[i].pokemon.name;
-
-		await getPokemon(pokemonName);
-	}
 }
 
 async function fetch1stGen() {
@@ -68,14 +48,59 @@ async function getPokemon(id) {
 	const results = await fetch(url);
 	const data = await results.json();
 
-	console.log(data);
+	cashToLocalStorage(data);
+}
 
-	createPokemonCard(data);
+function cashToLocalStorage(data) {
+	const { id, name, forms, sprites, types } = data;
+
+	const pokemonData = {
+		id: id,
+		name: name,
+		forms: forms,
+		sprite: sprites.front_default,
+		types: types,
+	};
+	localStorage.setItem(id, JSON.stringify(pokemonData));
+}
+
+function createPokeData() {
+	let allPokemon = [];
+
+	for (let i = 1; i <= COUNT_1_GEN; i++) {
+		const currentPoke = localStorage.getItem(i);
+		allPokemon.push(JSON.parse(currentPoke));
+	}
+
+	return allPokemon;
+}
+
+function resetPokedex() {
+	pokedex.innerHTML = '';
+}
+
+async function filterPokemon(e) {
+	resetPokedex();
+	const clickedType = e.target.innerText;
+
+	let filteredPoke = [];
+
+	all1stGenPokemon.forEach((obj) => {
+		for (let i = 0; i < obj.types.length; i++) {
+			if (obj.types[i].type.name === clickedType) {
+				filteredPoke.push(obj);
+			}
+		}
+	});
+
+	filteredPoke.forEach((poke) => createPokemonCard(poke));
 }
 
 function createPokemonCard(pokemon) {
 	const cardEl = document.createElement('div');
 	cardEl.classList.add('pokemon');
+
+	console.log(pokemon);
 
 	const pokeTypes = pokemon.types.map(
 		(type) =>
@@ -84,10 +109,12 @@ function createPokemonCard(pokemon) {
 			}</span>`
 	);
 
+	console.log(pokeTypes);
+
 	const cardTemplate = `
-      <div class="img-container">
+	   <div class="img-container">
 			<img
-				src="${pokemon.sprites.front_default}"
+				src="${pokemon.sprite}"
 						alt="${pokemon.name} image"
 			/>
 		</div>
@@ -102,11 +129,16 @@ function createPokemonCard(pokemon) {
 			<h3 class="name">${pokemon.name}</h3>
 			<small class="type">Type(s):${pokeTypes.join('')}</small>
 		</div>
-   `;
+	`;
 
 	cardEl.innerHTML = cardTemplate;
 
 	pokedex.append(cardEl);
 }
 
-// fetchPokemons();
+function showAll1stGen() {
+	all1stGenPokemon.forEach((poke) => createPokemonCard(poke));
+}
+
+fetch1stGen();
+const all1stGenPokemon = createPokeData();
