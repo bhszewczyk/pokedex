@@ -41,9 +41,12 @@ for (const color in colors) {
 
 // get data for each pokemon from 1st gen
 async function fetch1stGen() {
+	let initialArr = [];
 	for (let i = 1; i <= COUNT_1_GEN; i++) {
-		await getPokemon(i);
+		initialArr.push(i);
 	}
+	await Promise.all(initialArr.map((id) => getPokemon(id)));
+
 	loaderOverlay.remove();
 }
 
