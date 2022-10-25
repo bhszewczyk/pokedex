@@ -20,6 +20,37 @@ body {
 	justify-content: center;
 }
 
+.loader-overlay {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	position: fixed;
+	width: 100vw;
+	height: 100vh;
+	top: 0;
+	left: 0;
+	background-color: #dae7e3;
+	background: linear-gradient(to right, #f3f7f6, #cedfda);
+}
+
+.loader-img {
+	width: 10rem;
+	height: 10rem;
+	transform: rotate(0);
+	animation: rotating 1.4s infinite linear;
+}
+
+@keyframes rotating {
+	from {
+		transform: rotate(0);
+	}
+
+	to {
+		transform: rotate(360deg);
+	}
+}
+
 .filter {
 	max-width: 80rem;
 	display: flex;

@@ -1,7 +1,10 @@
 const pokedex = document.querySelector('.pokedex-container');
 const startingOptionEl = document.querySelector('.filter');
 const btn1gen = document.querySelector('.btn-fetch--1-gen');
+const loaderOverlay = document.querySelector('.loader-overlay');
+
 const COUNT_1_GEN = 151;
+
 const colors = {
 	grass: '#cdeac0',
 	fire: '#f9c6c9',
@@ -41,6 +44,7 @@ async function fetch1stGen() {
 	for (let i = 1; i <= COUNT_1_GEN; i++) {
 		await getPokemon(i);
 	}
+	loaderOverlay.remove();
 }
 
 // fetch pokemon data using id
