@@ -79,7 +79,10 @@ function cacheToLocalStorage(data) {
 }
 
 // get cached data
-function createPokeData() {
+async function createPokeData() {
+	// fetch data for the first time
+	await fetch1stGen();
+
 	let allPokemon = [];
 
 	for (let i = 1; i <= COUNT_1_GEN; i++) {
@@ -103,7 +106,7 @@ async function filterPokemon(e) {
 	const filteredPoke = all1stGenPokemon.filter((obj) => {
 		for (let i = 0; i < obj.types.length; i++) {
 			if (obj.types[i].type.name === clickedType) {
-				return obj;
+				return true;
 			}
 		}
 	});
@@ -161,7 +164,15 @@ function showAll1stGen() {
 	all1stGenPokemon.forEach((poke) => createPokemonCard(poke));
 }
 
-// fetch data for the first time
-fetch1stGen();
 // create global variablewith pokemon data
-const all1stGenPokemon = createPokeData();
+
+let all1stGenPokemon;
+createPokeData()
+	.then((res) => (all1stGenPokemon = res))
+	.catch((err) => {
+		const errorEl = document.createElement('div');
+		errorEl.classList.add('loader-overlay');
+
+		errorEl.innerText = err.message;
+		document.body.append(errorEl);
+	});
